@@ -29,7 +29,7 @@ export const updateBook = async (id: number, status: string) => {
   });
   const responseJson = await response.json();
   revalidatePath("/");
-  console.log({ responseJson });
+  if (responseJson.ok === 400) throw new Error(responseJson.detail);
   return responseJson;
 };
 

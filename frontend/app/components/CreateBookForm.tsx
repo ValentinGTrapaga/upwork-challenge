@@ -4,12 +4,19 @@ import { insertBook } from "../actions";
 
 export const CreateBookForm = () => {
   const formRef = useRef<HTMLFormElement>(null);
+  const [error, setError] = React.useState<string | null>(null);
 
   return (
     <form
       className="flex-col flex items-center gap-4"
       action={async (formData) => {
-        await insertBook(formData);
+        const response = await insertBook(formData);
+        if (response.detail) {
+          setError(response.detail);
+          setTimeout(() => {
+            setError(null);
+          }, 3000);
+        }
         formRef.current?.reset();
       }}
       ref={formRef}
@@ -30,6 +37,7 @@ export const CreateBookForm = () => {
       >
         Enter
       </button>
+      {error && <p className="text-red-500">{error}</p>}
     </form>
   );
 };
