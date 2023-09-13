@@ -2,12 +2,12 @@ FROM node:20
 
 WORKDIR /app
 
-COPY package*.json .
+RUN apk add --no-cache libc6-compat
 
-RUN cd /app && npm install
+COPY package.json package-lock.json /app/
 
-COPY . .
+RUN npm install
+
+COPY . /app/
 
 EXPOSE 3000
-
-CMD ["npm", "run", "dev"]
