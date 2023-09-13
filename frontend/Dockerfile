@@ -2,14 +2,23 @@ FROM node:20-alpine
 
 WORKDIR /app
 
-RUN apk add --no-cache libc6-compat
+COPY package.json yarn.lock* package-lock.json* pnpm-lock.yaml* ./
+RUN \
+  if [ -f yarn.lock ]; then yarn --frozen-lockfile; \
+  elif [ -f package-lock.json ]; then npm ci; \
+  elif [ -f pnpm-lock.yaml ]; then yarn global add pnpm && pnpm i; \
+  # Allow install without lockfile, so example works even without Node.js installed locally
+  else echo "Warning: Lockfile not found. It is recommended to commit lockfiles to version control." && yarn install; \
+  fi
 
-COPY package.json package-lock.json /app/
+COPY src ./src
+COPY public ./public
+COPY next.config.js .
+COPY jsconfig.json .
 
-RUN npm install
-
-COPY . /app/
-
-EXPOSE 3000
-
-CMD ["npm", "run", "dev"]
+CMD \
+  if [ -f yarn.lock ]; then yarn dev; \
+  elif [ -f package-lock.json ]; then npm run dev; \
+  elif [ -f pnpm-lock.yaml ]; then pnpm dev; \
+  else yarn dev; \
+  fi
