@@ -4,11 +4,11 @@ WORKDIR /app
 
 RUN apk add --no-cache libc6-compat
 
-COPY package.json package-lock.json /
+COPY package.json package-lock.json /app/
 
-RUN npm ci && npm cache clean --force
+RUN npm install
 
-COPY . /
+COPY . /app/
 
 EXPOSE 3000
 

@@ -1,11 +1,12 @@
 # Challenge
 
 Create a library app where the user could:
+
 - Add a book
 - Delete a book
 - Change book status (to read, reading, completed)
 
-# Description 
+# Description
 
 The backend was done using pymysql and fastapi.
 The frontend was used using NextJS with app router and server actions.
@@ -18,7 +19,11 @@ It is important to have Docker previously installed
 ```
 git clone https://github.com/ValentinGTrapaga/upwork-challenge.git
 
-cd upwork-challenge
+cd upwork-challenge/frontend
+
+npm install
+
+cd ..
 
 docker compose up
 ```
