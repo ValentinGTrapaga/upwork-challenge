@@ -1,13 +1,15 @@
-FROM node:20
+FROM node:20-alpine
 
 WORKDIR /app
 
 RUN apk add --no-cache libc6-compat
 
-COPY package.json package-lock.json /app/
+COPY package.json package-lock.json /
 
-RUN npm install
+RUN npm ci && npm cache clean --force
 
-COPY . /app/
+COPY . /
 
 EXPOSE 3000
+
+CMD ["npm", "run", "dev"]
